@@ -7,7 +7,8 @@ import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import * as Loadable from "react-loadable";
 import RootReducer from "@app/reducers";
-import App from "@app/index.tsx";
+import App from "../app/index.tsx";
+import {AppContainer} from "react-hot-loader";
 
 window.addEventListener("load", async function () {
     const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware();
@@ -24,23 +25,33 @@ window.addEventListener("load", async function () {
     const app: HTMLElement | null = document.getElementById("app");
 
     if (app !== null) {
-        const appReact = <Provider store={reduxStore}>
-            <Router history={history}>
-                <App/>
-            </Router>
-        </Provider>;
+        const appReact = (AppComponent) => <AppContainer>
+            <Provider store={reduxStore}>
+                <Router history={history}>
+                    <AppComponent/>
+                </Router>
+            </Provider>
+        </AppContainer>;
 
         if (window.__PRELOADED_STATE__ !== undefined) {
             await (Loadable as any).preloadReady();
             ReactDOM.hydrate(
-                appReact,
+                appReact(App),
                 app
             );
         } else {
-            ReactDOM.render(
-                appReact,
+            const render = (AppComponent) => ReactDOM.render(
+                appReact(AppComponent),
                 app
             );
+
+            render(App);
+
+            if (module.hot) {
+                module.hot.accept('../app/index.tsx', () => {
+                    render(App);
+                })
+            }
         }
     }
 });

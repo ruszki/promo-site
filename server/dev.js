@@ -1,6 +1,7 @@
 const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const path = require("path");
 const fs = require("fs");
 const utils = require("../config/webpack/utils");
@@ -36,8 +37,7 @@ const config = (client, dev) => {
 const dev = !process.env.NODE_ENV || process.env.NODE_ENV != "production";
 
 const configArray = [
-    config(true, dev),
-    config(false, dev)
+    config(true, dev)
 ];
 
 const compiler = webpack(configArray);
@@ -46,7 +46,13 @@ const server = express();
 
 server.use(webpackDevMiddleware(compiler, {
     publicPath: "/assets/",
-    serverSideRender: true
+    serverSideRender: true,
+    noInfo: true
+}));
+
+server.use(webpackHotMiddleware(compiler, {
+    log: console.log,
+    path: "/__webpack_hmr"
 }));
 
 server.use(express.json({
@@ -65,19 +71,19 @@ server.get("/", (req, res) => {
     if (assetsByChunkName.hasOwnProperty("manifest")) {
         normalizeAssets(assetsByChunkName["manifest"])
             .filter(path => path.endsWith('.js'))
-            .forEach(path => scripts.push(`<script src="/assets/${assetsByChunkName["manifest"]}" defer></script>`));
+            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     if (assetsByChunkName.hasOwnProperty("vendor")) {
         normalizeAssets(assetsByChunkName["vendor"])
             .filter(path => path.endsWith('.js'))
-            .forEach(path => scripts.push(`<script src="/assets/${assetsByChunkName["vendor"]}" defer></script>`));
+            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     if (assetsByChunkName.hasOwnProperty("main")) {
         normalizeAssets(assetsByChunkName["main"])
             .filter(path => path.endsWith('.js'))
-            .forEach(path => scripts.push(`<script src="/assets/${assetsByChunkName["main"]}" defer></script>`));
+            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     Object.keys(assetsByChunkName).forEach(key => {

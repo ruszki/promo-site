@@ -24,6 +24,8 @@ module.exports = (client, dev) => {
 
     plugins.push(dev ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
 
+    dev && plugins.push(new webpack.HotModuleReplacementPlugin());
+
     !dev && plugins.push(new UglifyJsPlugin({
         uglifyOptions: {
             ecma: 6
