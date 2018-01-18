@@ -1,52 +1,103 @@
 {
-  "name": "promo-site",
-  "version": "0.0.1",
-  "description": "A site to promote my works as a web developer",
-  "main": "index.js",
-  "repository": "https://github.com/ruszki/promo-site.git",
-  "author": "Gergo, Vladiszavlyev <me@ruszki.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-plugin-emotion": "^8.0.12",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-react-constant-elements": "^6.23.0",
-    "babel-plugin-transform-react-inline-elements": "^6.22.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "cache-loader": "^1.2.0",
-    "emotion": "^8.0.12",
-    "express": "^4.16.2",
-    "favicons-webpack-plugin": "^0.0.7",
-    "file-loader": "^1.1.6",
-    "fork-ts-checker-webpack-plugin": "^0.3.0",
-    "html-webpack-plugin": "^2.30.1",
-    "image-webpack-loader": "^3.4.2",
-    "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
-    "inversify": "^4.9.0",
-    "isomorphic-fetch": "^2.2.1",
-    "isomorphic-style-loader": "^4.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-emotion": "^8.0.12",
-    "react-loadable": "^5.3.1",
-    "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
-    "redux": "^3.7.2",
-    "redux-actions": "^2.2.1",
-    "redux-saga": "^0.16.0",
-    "reflect-metadata": "^0.1.12",
-    "reselect": "^3.0.1",
-    "thread-loader": "^1.1.2",
-    "ts-loader": "^3.2.0",
-    "typescript": "^2.6.2",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.10.0"
-  }
+    "name": "promo-site",
+    "version": "0.0.1",
+    "description": "A site to promote my works as a web developer",
+    "main": "index.js",
+    "repository": "https://github.com/ruszki/promo-site.git",
+    "author": "Gergo, Vladiszavlyev <me@ruszki.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-plugin-emotion": "^8.0.12",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
+        "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+        "babel-plugin-transform-object-assign": "^6.22.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-plugin-transform-react-constant-elements": "^6.23.0",
+        "babel-plugin-transform-react-inline-elements": "^6.22.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "cache-loader": "^1.2.0",
+        "emotion": "^8.0.12",
+        "express": "^4.16.2",
+        "favicons-webpack-plugin": "^0.0.7",
+        "file-loader": "^1.1.6",
+        "fork-ts-checker-webpack-plugin": "^0.3.0",
+        "html-webpack-plugin": "^2.30.1",
+        "image-webpack-loader": "^3.4.2",
+        "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
+        "inversify": "^4.9.0",
+        "isomorphic-fetch": "^2.2.1",
+        "isomorphic-style-loader": "^4.0.0",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "react-emotion": "^8.0.12",
+        "react-loadable": "^5.3.1",
+        "react-redux": "^5.0.6",
+        "react-router-dom": "^4.2.2",
+        "react-router-redux": "^4.0.8",
+        "redux": "^3.7.2",
+        "redux-actions": "^2.2.1",
+        "redux-saga": "^0.16.0",
+        "reflect-metadata": "^0.1.12",
+        "reselect": "^3.0.1",
+        "serialize-javascript": "^1.4.0",
+        "thread-loader": "^1.1.2",
+        "ts-loader": "^3.2.0",
+        "tslint": "^5.9.1",
+        "typescript": "^2.6.2",
+        "uglifyjs-webpack-plugin": "^1.1.6",
+        "url-loader": "^0.6.2",
+        "webpack": "^3.10.0"
+    },
+    "babel": {
+        "presets": [
+            "react", [
+                "env",
+                {
+                    "modules": false
+                }
+            ]
+        ],
+        "plugins": [
+            "emotion",
+            "syntax-dynamic-import",
+            "transform-es2015-destructuring",
+            "transform-object-rest-spread",
+            "transform-object-assign",
+            "react-loadable/babel",
+            "transform-react-constant-elements",
+            "transform-react-inline-elements"
+        ],
+        "env": {
+            "production": {
+                "plugins": [
+                    [
+                        "emotion",
+                        {
+                            "hoist": true
+                        }
+                    ]
+                ]
+            },
+            "development": {
+                "plugins": [
+                    [
+                        "emotion",
+                        {
+                            "sourceMap": true,
+                            "autoLabel": true
+                        }
+                    ]
+                ]
+            }
+        }
+    },
+    "scripts": {
+        "runWebpack": "NODE_OPTIONS=--max_old_space_size=4096 webpack --colors --config config/webpack/webpack.config.js",
+        "runWebpack:win": "set NODE_OPTIONS=--max_old_space_size=4096 & webpack --colors --config config/webpack/webpack.config.js",
+        "runServer": "node build/server/server.entry.js"
+    }
 }

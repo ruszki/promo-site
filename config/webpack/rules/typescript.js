@@ -1,5 +1,10 @@
 const path = require("path");
 
+const workerPoolTs = {
+    workers: require("os").cpus().length - 1,
+    name: "ts"
+};
+
 module.exports = (client, dev) => {
     const use = [];
 
@@ -25,7 +30,8 @@ module.exports = (client, dev) => {
     use.push({
         loader: "ts-loader",
         options: {
-            happyPackMode: true
+            happyPackMode: true,
+            configFile: path.resolve(__dirname, "../../tsconfig.json")
         }
     });
 

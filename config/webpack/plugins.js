@@ -1,4 +1,8 @@
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const LoadableWebpack = require("react-loadable/webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const webpack = require("webpack");
 const utils = require("./utils");
 const path = require("path");
@@ -8,7 +12,8 @@ module.exports = (client, dev) => {
 
     plugins.push(new ForkTsCheckerWebpackPlugin({
         checkSyntacticErrors: true,
-        tslint: true
+        tslint: path.resolve(__dirname, "../tslint.json"),
+        tsconfig: path.resolve(__dirname, "../tsconfig.json")
     }));
 
     plugins.push(new webpack.DefinePlugin({
@@ -42,7 +47,7 @@ module.exports = (client, dev) => {
     }));
 
     client && plugins.push(new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "../../resources/templates/index.html"),
+        template: path.resolve(__dirname, "../../server/resources/index.html"),
         filename: path.resolve(__dirname, "../../build/" + utils.getName(false) + "/index.html"),
         inject: false
     }));
@@ -52,8 +57,8 @@ module.exports = (client, dev) => {
     }));
 
     client && plugins.push(new FaviconsWebpackPlugin({
-        logo: path.resolve(__dirname, "../../resources/img/logo/favicon.png"),
-        prefix: "assets/img/favicons-[hash]/",
+        logo: path.resolve(__dirname, "../../app/favicon.png"),
+        prefix: "img/favicons-[hash]/",
         inject: true,
         icons: {
             android: false,

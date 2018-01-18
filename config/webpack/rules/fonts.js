@@ -17,7 +17,7 @@ module.exports = (client, dev) => {
             digest: "hex",
             name: dev ? "[name].[ext]" : "[name].[hash].[ext]",
             publicPath: "/assets/",
-            outputPath: "assets/fonts/"
+            outputPath: "fonts/"
         }
     });
 

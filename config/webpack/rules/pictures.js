@@ -13,12 +13,12 @@ module.exports = (client, dev) => {
     use.push({
         loader: dev ? "file-loader" : "url-loader",
         options: {
-            limit: dev ? undefined : 8192
+            limit: dev ? undefined : 8192,
             hash: "sha512",
             digest: "hex",
             name: dev ? "[name].[ext]" : "[name].[hash].[ext]",
             publicPath: "/assets/",
-            outputPath: "assets/img/"
+            outputPath: "img/"
         }
     });
 
