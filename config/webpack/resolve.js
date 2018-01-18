@@ -4,9 +4,9 @@ module.exports = (client, dev) => {
     return {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
         alias: {
-            "@app": path.resolve(__dirname, "app"),
-            "@res": path.resolve(__dirname, "resources"),
-            "@img": path.resolve(__dirname, "resources/img")
+            "@app": path.resolve(__dirname, "../../app"),
+            "@res": path.resolve(__dirname, "../../app/resources"),
+            "@img": path.resolve(__dirname, "../../app/resources/img")
         }
     };
 };

@@ -37,7 +37,7 @@
         "react-loadable": "^5.3.1",
         "react-redux": "^5.0.6",
         "react-router-dom": "^4.2.2",
-        "react-router-redux": "^4.0.8",
+        "react-router-redux": "^5.0.0-alpha.9",
         "redux": "^3.7.2",
         "redux-actions": "^2.2.1",
         "redux-saga": "^0.16.0",
@@ -50,7 +50,8 @@
         "typescript": "^2.6.2",
         "uglifyjs-webpack-plugin": "^1.1.6",
         "url-loader": "^0.6.2",
-        "webpack": "^3.10.0"
+        "webpack": "^3.10.0",
+        "webpack-dev-middleware": "^2.0.4"
     },
     "babel": {
         "presets": [
@@ -98,6 +99,7 @@
     "scripts": {
         "runWebpack": "NODE_OPTIONS=--max_old_space_size=4096 webpack --colors --config config/webpack/webpack.config.js",
         "runWebpack:win": "set NODE_OPTIONS=--max_old_space_size=4096 & webpack --colors --config config/webpack/webpack.config.js",
+        "run": "node --max_old_space_size=4096 server/dev.js",
         "runServer": "node build/server/server.entry.js"
     }
 }

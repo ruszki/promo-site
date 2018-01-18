@@ -1,5 +1,5 @@
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const os = require("os");
+const path = require("path");
+const fs = require("fs");
 const utils = require("./utils");
 const output = require("./output");
 const resolve = require("./resolve");
@@ -9,8 +9,6 @@ const entry = require("./entry");
 const modulePack = require("./module");
 const target = require("./target");
 const externals = require("./externals");
-const path = require("path");
-const fs = require("fs");
 
 const buildPath = path.resolve(__dirname, "../../build");
 

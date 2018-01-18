@@ -7,7 +7,7 @@ import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import * as Loadable from "react-loadable";
 import RootReducer from "@app/reducers";
-import App from "@app";
+import App from "@app/index.tsx";
 
 window.addEventListener("load", async function () {
     const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware();

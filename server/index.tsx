@@ -9,8 +9,8 @@ import createSagaMiddleware, {SagaMiddleware} from "redux-saga";
 import Loadable from "react-loadable";
 import {getBundles} from "react-loadable/webpack";
 import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
-import RootReducer from "../app/reducers";
-import App from "../app";
+import RootReducer from "@app/reducers";
+import App from "@app/index.tsx";
 import serialize from "./serialize";
 
 const server = express();
@@ -21,7 +21,7 @@ server.use('/assets', express.static('build/client'));
 const template = fs.readFileSync("build/server/index.html", "utf8");
 const stats = JSON.parse(fs.readFileSync("build/server/react-loadable.json", "utf8"));
 
-server.get("/", (req: express.Request, res: express.Response, next: express.NextFunction) => {
+server.get((req: express.Request, res: express.Response, next: express.NextFunction) => {
     const context = {};
 
     let modules: Array<any> = [];
@@ -42,7 +42,11 @@ server.get("/", (req: express.Request, res: express.Response, next: express.Next
     const LoadableCapture = (Loadable as any).Capture;
 
     const markup = renderToString(
-        <App/>
+        <Provider store={reduxStore}>
+            <Router history={history}>
+                <App/>
+            </Router>
+        </Provider>
     );
 
     let bundles: Array<any> = getBundles(stats, modules);
