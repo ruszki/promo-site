@@ -9,6 +9,7 @@ import createSagaMiddleware, {SagaMiddleware} from "redux-saga";
 import Loadable from "react-loadable";
 import {getBundles} from "react-loadable/webpack";
 import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
+import {extractCritical} from "emotion-server";
 import RootReducer from "@app/reducers";
 import App from "@app/index.tsx";
 import serialize from "./serialize";
@@ -21,7 +22,7 @@ server.use('/assets', express.static('build/client'));
 const template = fs.readFileSync("build/server/index.html", "utf8");
 const stats = JSON.parse(fs.readFileSync("build/server/react-loadable.json", "utf8"));
 
-server.get((req: express.Request, res: express.Response, next: express.NextFunction) => {
+server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
     const context = {};
 
     let modules: Array<any> = [];
@@ -49,22 +50,26 @@ server.get((req: express.Request, res: express.Response, next: express.NextFunct
         </Provider>
     );
 
+    const {html, ids, css} = extractCritical(markup);
+
     let bundles: Array<any> = getBundles(stats, modules);
     bundles = bundles.filter((bundle: any) => !(/\.map$/.test(bundle.file)));
 
     const bundlesString = bundles.length > 0 ?
         bundles.map((bundle: any) => {
             return `<script src="/resources/generated/${bundle.file}" defer></script>`;
-        }).join("\n")
+        }).join("")
         : "";
 
     if (!(context as any).url) {
         res.type("html");
         res.charset = "utf-8";
         res.send(template
-            .replace("SERVER_RENDERED_HTML", markup)
+            .replace("SERVER_RENDERED_HTML", html)
             .replace("SERVER_RENDERED_STATE", serialize(reduxStore.getState()))
             .replace("SERVER_RENDERED_SCRIPTS", bundlesString)
+            .replace("SERVER_RENDERED_STYLESHEETS", JSON.stringify(ids))
+            .replace("SERVER_RENDERED_STYLES", css));
     }
 
     next();

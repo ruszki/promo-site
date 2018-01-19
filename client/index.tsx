@@ -6,9 +6,10 @@ import {Provider} from "react-redux";
 import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import * as Loadable from "react-loadable";
+import {hydrate} from "emotion";
+import {AppContainer} from "react-hot-loader";
 import RootReducer from "@app/reducers";
 import App from "../app/index.tsx";
-import {AppContainer} from "react-hot-loader";
 
 window.addEventListener("load", async function () {
     const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware();
@@ -20,7 +21,11 @@ window.addEventListener("load", async function () {
         routerMiddleware(history)
     ));
 
-    sagaMiddleware.run(function*());
+    if (window.__PRELOADED_STYLESHEETS__ !== undefined) {
+        hydrate(window.__PRELOADED_STYLESHEETS__);
+    }
+
+    sagaMiddleware.run(function*(){});
 
     const app: HTMLElement | null = document.getElementById("app");
 

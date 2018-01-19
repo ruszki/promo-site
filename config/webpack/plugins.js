@@ -3,6 +3,7 @@ const LoadableWebpack = require("react-loadable/webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require("webpack");
 const utils = require("./utils");
 const path = require("path");

@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-  <head>
-    <meta charset="utf-8" />
-    <title>ruszki</title>
-    <meta name="author" content="BeeRides" />
+    <head>
+        <meta charset="utf-8" />
+        <title>ruszki</title>
+        <meta name="author" content="BeeRides" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
-      <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer></script>
-      <% } %>
-        SERVER_RENDERED_SCRIPTS
-  </head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+            <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer></script>
+            <% } %>
+                SERVER_RENDERED_SCRIPTS
+                <style type="text/css">
+                    SERVER_RENDERED_STYLES
+                </style>
+    </head>
 
-  <body>
-    <div id="app">SERVER_RENDERED_HTML</div>
-    <script>
-      window.__PRELOADED_STATE__ = SERVER_RENDERED_STATE;
-    </script>
-    <%= htmlWebpackPlugin.files.webpackChunkManifest %>
-  </body>
+    <body>
+        <div id="app">SERVER_RENDERED_HTML</div>
+        <script>
+            window.__PRELOADED_STATE__ = SERVER_RENDERED_STATE;
+
+            window.__PRELOADED_STYLESHEETS__ = SERVER_RENDERED_STYLESHEETS;
+        </script>
+        <%= htmlWebpackPlugin.files.webpackChunkManifest %>
+    </body>
 
 </html>

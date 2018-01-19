@@ -13,7 +13,6 @@ module.exports = (client, dev) => {
     if (client) {
         entry.push(path.resolve(__dirname, "../../client/index.tsx"));
     } else {
-        entry.push(path.resolve(__dirname, "../../server/polyfill.js"));
         entry.push(path.resolve(__dirname, "../../server/index.tsx"));
     }
 
