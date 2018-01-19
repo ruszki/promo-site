@@ -17,7 +17,9 @@ import serialize from "./serialize";
 const server = express();
 
 server.use(express.json({limit: "50mb"}));
-server.use('/assets', express.static('build/client'));
+server.use('/assets', express.static("build/client", {
+    maxAge: 31536000000
+}));
 
 const template = fs.readFileSync("build/server/index.html", "utf8");
 const stats = JSON.parse(fs.readFileSync("build/server/react-loadable.json", "utf8"));
