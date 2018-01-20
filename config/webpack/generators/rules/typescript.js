@@ -1,17 +1,18 @@
 const path = require("path");
+const constants = require("../constants");
 
 const workerPoolTs = {
     workers: require("os").cpus().length - 1,
     name: "ts"
 };
 
-module.exports = (client, dev) => {
+module.exports = (configType) => {
     const use = [];
 
-    dev && use.push({
+    configType.isDev() && use.push({
         loader: "cache-loader",
         options: {
-            cacheDirectory: path.resolve(__dirname, "../../../.cache/webpack")
+            cacheDirectory: path.resolve(constants.cacheDir, "webpack")
         }
     });
 
@@ -31,18 +32,23 @@ module.exports = (client, dev) => {
         loader: "ts-loader",
         options: {
             happyPackMode: true,
-            configFile: path.resolve(__dirname, "../../tsconfig.json")
+            configFile: path.resolve(constants.configDir, "tsconfig.json")
         }
     });
 
+    const include = [];
+
+    include.push(constants.appDir);
+
+    configType.isServer() && include.push(constants.serverDir);
+
+    configType.isClient() && include.push(constants.clientDir);
+
+    configType.isTest() && include.push(constants.testDir);
+
     return {
         test: /\.ts(x?)$/i,
-        include: [
-            path.resolve(__dirname, "../../../app"),
-            path.resolve(__dirname, "../../../server"),
-            path.resolve(__dirname, "../../../client"),
-            path.resolve(__dirname, "../../../tests")
-        ],
+        include,
         use
     };
 };

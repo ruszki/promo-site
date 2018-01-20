@@ -1,12 +1,13 @@
 const path = require("path");
+const constants = require("../constants");
 
-module.exports = (client, dev) => {
+module.exports = (configType) => {
     const use = [];
 
-    dev && use.push({
+    configType.isDev() && use.push({
         loader: "cache-loader",
         options: {
-            cacheDirectory: path.resolve(__dirname, "../../../.cache/webpack")
+            cacheDirectory: path.resolve(constants.cacheDir, "webpack")
         }
     });
 
@@ -15,8 +16,8 @@ module.exports = (client, dev) => {
         options: {
             hash: "sha512",
             digest: "hex",
-            name: dev ? "[name].[ext]" : "[name].[hash].[ext]",
-            publicPath: "/assets/",
+            name: configType.isDev() || configType.isTest() ? "[name].[ext]" : "[name].[hash].[ext]",
+            publicPath: constants.publicPath,
             outputPath: "fonts/"
         }
     });

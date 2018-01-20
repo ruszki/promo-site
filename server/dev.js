@@ -4,43 +4,14 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const path = require("path");
 const fs = require("fs");
-const utils = require("../config/webpack/utils");
-const output = require("../config/webpack/output");
-const resolve = require("../config/webpack/resolve");
-const plugins = require("../config/webpack/plugins");
-const devtool = require("../config/webpack/devtool");
-const entry = require("../config/webpack/entry");
-const modulePack = require("../config/webpack/module");
-const target = require("../config/webpack/target");
-const externals = require("../config/webpack/externals");
-
-const buildPath = path.resolve(__dirname, "../../build");
-
-if (!fs.existsSync(buildPath)) {
-    fs.mkdirSync(buildPath);
-}
-
-const config = (client, dev) => {
-    return {
-        name: utils.getName(client, dev),
-        output: output(client, dev),
-        resolve: resolve(client, dev),
-        plugins: plugins(client, dev),
-        devtool: devtool(client, dev),
-        entry: entry(client, dev),
-        module: modulePack(client, dev),
-        target: target(client, dev),
-        externals: externals(client, dev)
-    };
-};
+const baseConfig = require("../config/webpack/webpack.base.config");
+const ConfigType = require("../config/webpack/config-type");
 
 const dev = !process.env.NODE_ENV || process.env.NODE_ENV != "production";
 
-const configArray = [
-    config(true, dev)
-];
+const config = baseConfig(dev ? ConfigType.ClientDev : ConfigType.ClientProd);
 
-const compiler = webpack(configArray);
+const compiler = webpack(config);
 
 const server = express();
 
@@ -64,7 +35,7 @@ server.get("/", (req, res) => {
         return Array.isArray(assets) ? assets : [assets]
     }
 
-    const assetsByChunkName = res.locals.webpackStats.toJson().children[0].assetsByChunkName;
+    const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 
     const scripts = [];
 

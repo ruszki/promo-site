@@ -3,13 +3,13 @@ const json = require("./rules/json");
 const pictures = require("./rules/pictures");
 const fonts = require("./rules/fonts");
 
-module.exports = (client, dev) => {
+module.exports = (configType) => {
     const rules = [];
 
-    rules.push(typescript(client, dev));
-    rules.push(json(client, dev));
-    rules.push(pictures(client, dev));
-    rules.push(fonts(client, dev));
+    rules.push(typescript(configType));
+    rules.push(json(configType));
+    rules.push(pictures(configType));
+    rules.push(fonts(configType));
 
     return {
         rules

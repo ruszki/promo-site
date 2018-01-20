@@ -5,62 +5,62 @@ const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require("webpack");
-const utils = require("./utils");
 const path = require("path");
+const constants = require("./constants");
 
-module.exports = (client, dev) => {
+module.exports = (configType) => {
     const plugins = [];
 
     plugins.push(new ForkTsCheckerWebpackPlugin({
         checkSyntacticErrors: true,
-        tslint: path.resolve(__dirname, "../tslint.json"),
-        tsconfig: path.resolve(__dirname, "../tsconfig.json")
+        tslint: path.resolve(constants.configDir, "tslint.json"),
+        tsconfig: path.resolve(constants.configDir, "tsconfig.json")
     }));
 
     plugins.push(new webpack.DefinePlugin({
         "process.env": {
-            NODE_ENV: JSON.stringify(dev ? "development" : "production")
+            NODE_ENV: JSON.stringify(configType.isDev() || configType.isTest() ? "development" : "production")
         }
     }));
 
-    plugins.push(dev ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
+    (configType.isDev() || configType.isProd) && plugins.push(configType.isDev() ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
 
-    dev && plugins.push(new webpack.HotModuleReplacementPlugin());
+    configType.isDev() && plugins.push(new webpack.HotModuleReplacementPlugin());
 
-    !dev && plugins.push(new UglifyJsPlugin({
+    configType.isProd() && plugins.push(new UglifyJsPlugin({
         uglifyOptions: {
             ecma: 6
         }
     }));
 
-    client && plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    configType.isClient() && plugins.push(new webpack.optimize.CommonsChunkPlugin({
         names: "vendor",
         minChunks: function(module) {
             return module.context && module.context.indexOf('node_modules') !== -1;
         }
     }));
 
-    client && plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    configType.isClient() && plugins.push(new webpack.optimize.CommonsChunkPlugin({
         name: "manifest",
         minChunks: Infinity
     }));
 
-    client && plugins.push(new LoadableWebpack.ReactLoadablePlugin({
-        filename: path.resolve(__dirname, "../../build/" + utils.getName(false) + "/react-loadable.json"),
+    configType.isClient() && configType.isProd() && plugins.push(new LoadableWebpack.ReactLoadablePlugin({
+        filename: path.resolve(constants.serverBuildDir, "react-loadable.json"),
     }));
 
-    client && plugins.push(new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "../../server/resources/index.html"),
-        filename: path.resolve(__dirname, "../../build/" + utils.getName(false) + "/index.html"),
+    configType.isClient() && plugins.push(new HtmlWebpackPlugin({
+        template: path.resolve(constants.serverDir, "resources/index.html"),
+        filename: path.resolve(constants.serverBuildDir, "index.html"),
         inject: false
     }));
 
-    client && plugins.push(new InlineChunkManifestHtmlWebpackPlugin({
+    configType.isClient() && plugins.push(new InlineChunkManifestHtmlWebpackPlugin({
         dropAsset: true
     }));
 
-    client && plugins.push(new FaviconsWebpackPlugin({
-        logo: path.resolve(__dirname, "../../app/favicon.png"),
+    configType.isClient() && plugins.push(new FaviconsWebpackPlugin({
+        logo: path.resolve(constants.appDir, "favicon.png"),
         prefix: "img/favicons-[hash]/",
         inject: true,
         icons: {
@@ -78,7 +78,7 @@ module.exports = (client, dev) => {
         emitStats: false
     }));
 
-    !client && plugins.push(new webpack.optimize.LimitChunkCountPlugin({
+    (configType.isServer() || configType.isTest()) && plugins.push(new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1
     }));
 
