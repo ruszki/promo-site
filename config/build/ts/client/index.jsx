@@ -1,0 +1,45 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { applyMiddleware, createStore } from "redux";
+import { default as createSagaMiddleware } from "redux-saga";
+import { Provider } from "react-redux";
+import { ConnectedRouter as Router, routerMiddleware } from "react-router-redux";
+import createHistory from "history/createBrowserHistory";
+import * as Loadable from "react-loadable";
+import { hydrate } from "emotion";
+import { AppContainer } from "react-hot-loader";
+import RootReducer from "@app/reducers";
+import App from "../app/index.tsx";
+window.addEventListener("load", async function () {
+    const sagaMiddleware = createSagaMiddleware();
+    const history = createHistory();
+    const reduxStore = createStore(RootReducer, window.__PRELOADED_STATE__, applyMiddleware(sagaMiddleware, routerMiddleware(history)));
+    if (window.__PRELOADED_STYLESHEETS__ !== undefined) {
+        hydrate(window.__PRELOADED_STYLESHEETS__);
+    }
+    sagaMiddleware.run(function* () { });
+    const app = document.getElementById("app");
+    if (app !== null) {
+        const appReact = (AppComponent) => <AppContainer>
+            <Provider store={reduxStore}>
+                <Router history={history}>
+                    <AppComponent />
+                </Router>
+            </Provider>
+        </AppContainer>;
+        if (window.__PRELOADED_STATE__ !== undefined) {
+            await Loadable.preloadReady();
+            ReactDOM.hydrate(appReact(App), app);
+        }
+        else {
+            const render = (AppComponent) => ReactDOM.render(appReact(AppComponent), app);
+            render(App);
+            if (module.hot) {
+                module.hot.accept('../app/index.tsx', () => {
+                    render(App);
+                });
+            }
+        }
+    }
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanN4Iiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY2xpZW50L2luZGV4LnRzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEtBQUssS0FBSyxNQUFNLE9BQU8sQ0FBQztBQUMvQixPQUFPLEtBQUssUUFBUSxNQUFNLFdBQVcsQ0FBQztBQUN0QyxPQUFPLEVBQUMsZUFBZSxFQUFFLFdBQVcsRUFBUSxNQUFNLE9BQU8sQ0FBQztBQUMxRCxPQUFPLEVBQUMsT0FBTyxJQUFJLG9CQUFvQixFQUFpQixNQUFNLFlBQVksQ0FBQztBQUMzRSxPQUFPLEVBQUMsUUFBUSxFQUFDLE1BQU0sYUFBYSxDQUFDO0FBQ3JDLE9BQU8sRUFBQyxlQUFlLElBQUksTUFBTSxFQUFFLGdCQUFnQixFQUFDLE1BQU0sb0JBQW9CLENBQUM7QUFDL0UsT0FBTyxhQUFhLE1BQU0sOEJBQThCLENBQUM7QUFDekQsT0FBTyxLQUFLLFFBQVEsTUFBTSxnQkFBZ0IsQ0FBQztBQUMzQyxPQUFPLEVBQUMsT0FBTyxFQUFDLE1BQU0sU0FBUyxDQUFDO0FBQ2hDLE9BQU8sRUFBQyxZQUFZLEVBQUMsTUFBTSxrQkFBa0IsQ0FBQztBQUM5QyxPQUFPLFdBQVcsTUFBTSxlQUFlLENBQUM7QUFDeEMsT0FBTyxHQUFHLE1BQU0sa0JBQWtCLENBQUM7QUFFbkMsTUFBTSxDQUFDLGdCQUFnQixDQUFDLE1BQU0sRUFBRSxLQUFLO0lBQ2pDLE1BQU0sY0FBYyxHQUF3QixvQkFBb0IsRUFBRSxDQUFDO0lBRW5FLE1BQU0sT0FBTyxHQUFHLGFBQWEsRUFBRSxDQUFDO0lBRWhDLE1BQU0sVUFBVSxHQUFxQixXQUFXLENBQUMsV0FBVyxFQUFFLE1BQU0sQ0FBQyxtQkFBbUIsRUFBRSxlQUFlLENBQ3JHLGNBQWMsRUFDZCxnQkFBZ0IsQ0FBQyxPQUFPLENBQUMsQ0FDNUIsQ0FBQyxDQUFDO0lBRUgsRUFBRSxDQUFDLENBQUMsTUFBTSxDQUFDLHlCQUF5QixLQUFLLFNBQVMsQ0FBQyxDQUFDLENBQUM7UUFDakQsT0FBTyxDQUFDLE1BQU0sQ0FBQyx5QkFBeUIsQ0FBQyxDQUFDO0lBQzlDLENBQUM7SUFFRCxjQUFjLENBQUMsR0FBRyxDQUFDLFFBQVEsQ0FBQyxNQUFHLENBQUMsQ0FBQyxDQUFDO0lBRWxDLE1BQU0sR0FBRyxHQUF1QixRQUFRLENBQUMsY0FBYyxDQUFDLEtBQUssQ0FBQyxDQUFDO0lBRS9ELEVBQUUsQ0FBQyxDQUFDLEdBQUcsS0FBSyxJQUFJLENBQUMsQ0FBQyxDQUFDO1FBQ2YsTUFBTSxRQUFRLEdBQUcsQ0FBQyxZQUFZLEVBQUUsRUFBRSxDQUFDLENBQUMsWUFBWSxDQUM1QztZQUFBLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxDQUFDLFVBQVUsQ0FBQyxDQUN4QjtnQkFBQSxDQUFDLE1BQU0sQ0FBQyxPQUFPLENBQUMsQ0FBQyxPQUFPLENBQUMsQ0FDckI7b0JBQUEsQ0FBQyxZQUFZLEdBQ2pCO2dCQUFBLEVBQUUsTUFBTSxDQUNaO1lBQUEsRUFBRSxRQUFRLENBQ2Q7UUFBQSxFQUFFLFlBQVksQ0FBQyxDQUFDO1FBRWhCLEVBQUUsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxtQkFBbUIsS0FBSyxTQUFTLENBQUMsQ0FBQyxDQUFDO1lBQzNDLE1BQU8sUUFBZ0IsQ0FBQyxZQUFZLEVBQUUsQ0FBQztZQUN2QyxRQUFRLENBQUMsT0FBTyxDQUNaLFFBQVEsQ0FBQyxHQUFHLENBQUMsRUFDYixHQUFHLENBQ04sQ0FBQztRQUNOLENBQUM7UUFBQyxJQUFJLENBQUMsQ0FBQztZQUNKLE1BQU0sTUFBTSxHQUFHLENBQUMsWUFBWSxFQUFFLEVBQUUsQ0FBQyxRQUFRLENBQUMsTUFBTSxDQUM1QyxRQUFRLENBQUMsWUFBWSxDQUFDLEVBQ3RCLEdBQUcsQ0FDTixDQUFDO1lBRUYsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1lBRVosRUFBRSxDQUFDLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUM7Z0JBQ2IsTUFBTSxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsa0JBQWtCLEVBQUUsR0FBRyxFQUFFO29CQUN2QyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUM7Z0JBQ2hCLENBQUMsQ0FBQyxDQUFBO1lBQ04sQ0FBQztRQUNMLENBQUM7SUFDTCxDQUFDO0FBQ0wsQ0FBQyxDQUFDLENBQUMifQ==

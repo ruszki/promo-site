@@ -1,0 +1,35 @@
+{
+    "exclude": [
+        "../../node_modules"
+    ],
+    "compileOnSave": true,
+    "compilerOptions": {
+        "sourceMap": false,
+        "inlineSourceMap": true,
+        "jsx": "preserve",
+        "newLine": "LF",
+        "outDir": "../build/ts",
+        "module": "esnext",
+        "target": "es2017",
+        "lib": [
+            "dom",
+            "es2017",
+            "dom.iterable"
+        ],
+        "diagnostics": true,
+        "allowJs": false,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strict": true,
+        "baseUrl": "../../",
+        "paths": {
+            "@app": ["app"],
+            "@app/*": ["app/*"],
+            "@res": ["app/resources"],
+            "@res/*": ["app/resources/*"],
+            "@img": ["app/resources/img"],
+            "@img/*": ["app/resources/img/*"]
+        }
+    }
+}

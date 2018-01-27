@@ -3,8 +3,6 @@ interface Window {
     __PRELOADED_STYLESHEETS__: any | undefined;
 }
 
-interface Module {
+interface NodeModule {
     hot: any | undefined;
 }
-
-declare var module: Module;

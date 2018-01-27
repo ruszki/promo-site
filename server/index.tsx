@@ -6,18 +6,18 @@ import {renderToString} from "react-dom/server";
 import {applyMiddleware, createStore, Store} from "redux";
 import {Provider} from "react-redux";
 import createSagaMiddleware, {SagaMiddleware} from "redux-saga";
-import Loadable from "react-loadable";
-import {getBundles} from "react-loadable/webpack";
+import * as Loadable from "react-loadable";
+import {getBundles, Bundle} from "react-loadable/webpack";
 import {ConnectedRouter as Router, routerMiddleware} from "react-router-redux";
 import {extractCritical} from "emotion-server";
 import RootReducer from "@app/reducers";
-import App from "@app/index.tsx";
+import App from "@app";
 import serialize from "./serialize";
 
 const server = express();
 
 server.use(express.json({limit: "50mb"}));
-server.use('/assets', express.static("build/client", {
+server.use("/assets", express.static("build/client", {
     maxAge: 31536000000
 }));
 
@@ -27,7 +27,7 @@ const stats = JSON.parse(fs.readFileSync("build/server/react-loadable.json", "ut
 server.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
     const context = {};
 
-    let modules: Array<any> = [];
+    let modules: Array<string> = [];
 
     const location: string = req.path;
 
@@ -37,24 +37,24 @@ server.use((req: express.Request, res: express.Response, next: express.NextFunct
 
     const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware();
 
-    const reduxStore: Store<RootState> = createStore(RootReducer, applyMiddleware(
+    const reduxStore: Store<any> = createStore(RootReducer, applyMiddleware(
         sagaMiddleware,
         routerMiddleware(history)
     ));
 
-    const LoadableCapture = (Loadable as any).Capture;
-
     const markup = renderToString(
-        <Provider store={reduxStore}>
-            <Router history={history}>
-                <App/>
-            </Router>
-        </Provider>
+        <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+            <Provider store={reduxStore}>
+                <Router history={history}>
+                    <App/>
+                </Router>
+            </Provider>
+        </Loadable.Capture>
     );
 
     const {html, ids, css} = extractCritical(markup);
 
-    let bundles: Array<any> = getBundles(stats, modules);
+    let bundles: Array<Bundle> = getBundles(stats, modules);
     bundles = bundles.filter((bundle: any) => !(/\.map$/.test(bundle.file)));
 
     const bundlesString = bundles.length > 0 ?
@@ -79,6 +79,6 @@ server.use((req: express.Request, res: express.Response, next: express.NextFunct
 
 console.log("Starting server...");
 
-(Loadable as any).preloadAll().then(() => {
+Loadable.preloadAll().then(() => {
     server.listen(8080, () => console.log("Server started on port 8080"));
 });

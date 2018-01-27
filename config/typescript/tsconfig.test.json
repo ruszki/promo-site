@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.base",
+    "include": [
+        "../../app/**/*.ts",
+        "../../app/**/*.tsx",
+        "../../test/**/*.ts",
+        "../../test/**/*.tsx"
+    ],
+    "compilerOptions": {
+        "module": "CommonJS"
+    }
+}

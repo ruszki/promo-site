@@ -1,8 +1,4 @@
 import * as React from "react";
-import styled from 'react-emotion';
+import ColoredDiv from "./ColoredDiv";
 
-const ColoredDiv = styled.div({
-    color: "green"
-});
-
-export default (props: any) => <ColoredDiv>Version 0.0.1</ColoredDiv>;
+export default (props: {children?: React.ReactNode}) => <ColoredDiv>Version 0.0.1</ColoredDiv>;

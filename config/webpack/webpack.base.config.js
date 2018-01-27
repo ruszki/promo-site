@@ -9,15 +9,20 @@ const target = require("./generators/target");
 const externals = require("./generators/externals");
 
 module.exports = (configType) => {
-    return {
+    const config = {
         name: name(configType),
-        output: output(configType),
         resolve: resolve(configType),
         plugins: plugins(configType),
         devtool: devtool(configType),
-        entry: entry(configType),
         module: modulePack(configType),
         target: target(configType),
         externals: externals(configType)
     };
+
+    if (!configType.isTest()) {
+        config.entry = entry(configType);
+        config.output = output(configType);
+    }
+
+    return config;
 };

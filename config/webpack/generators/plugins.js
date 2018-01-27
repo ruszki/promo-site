@@ -11,10 +11,16 @@ const constants = require("./constants");
 module.exports = (configType) => {
     const plugins = [];
 
+    const configFilePath = "typescript/" + (
+        configType.isClient() ? "tsconfig.client.json" :
+        configType.isServer() ? "tsconfig.server.json" :
+        configType.isTest() ? "tsconfig.test.json" : undefined
+    );
+
     plugins.push(new ForkTsCheckerWebpackPlugin({
         checkSyntacticErrors: true,
         tslint: path.resolve(constants.configDir, "tslint.json"),
-        tsconfig: path.resolve(constants.configDir, "tsconfig.json")
+        tsconfig: path.resolve(constants.configDir, configFilePath)
     }));
 
     plugins.push(new webpack.DefinePlugin({

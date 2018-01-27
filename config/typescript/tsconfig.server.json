@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.base",
+    "include": [
+        "../../app/**/*.ts",
+        "../../app/**/*.tsx",
+        "../../server/**/*.ts",
+        "../../server/**/*.tsx"
+    ]
+}

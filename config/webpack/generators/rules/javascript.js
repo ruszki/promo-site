@@ -1,11 +1,6 @@
 const path = require("path");
 const constants = require("../constants");
 
-const workerPoolTs = {
-    workers: require("os").cpus().length - 1,
-    name: "ts"
-};
-
 module.exports = (configType) => {
     const use = [];
 
@@ -28,20 +23,6 @@ module.exports = (configType) => {
         }
     });
 
-    const configFilePath = "typescript/" + (
-        configType.isClient() ? "tsconfig.client.json" :
-        configType.isServer() ? "tsconfig.server.json" :
-        configType.isTest() ? "tsconfig.test.json" : undefined
-    );
-
-    configFilePath !== undefined && use.push({
-        loader: "ts-loader",
-        options: {
-            happyPackMode: !configType.isTest(),
-            configFile: path.resolve(constants.configDir, configFilePath)
-        }
-    });
-
     const include = [];
 
     include.push(constants.appDir);
@@ -50,7 +31,7 @@ module.exports = (configType) => {
     configType.isTest() && include.push(constants.testDir);
 
     return {
-        test: /\.ts(x?)$/i,
+        test: /\.js$/i,
         include,
         exclude: path.resolve(constants.rootDir, "node_modules"),
         use
