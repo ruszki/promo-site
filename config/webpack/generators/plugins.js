@@ -3,7 +3,7 @@ const LoadableWebpack = require("react-loadable/webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InlineChunkManifestHtmlWebpackPlugin = require("inline-chunk-manifest-html-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
 const constants = require("./constants");
@@ -13,8 +13,8 @@ module.exports = (configType) => {
 
     const configFilePath = "typescript/" + (
         configType.isClient() ? "tsconfig.client.json" :
-        configType.isServer() ? "tsconfig.server.json" :
-        configType.isTest() ? "tsconfig.test.json" : undefined
+            configType.isServer() ? "tsconfig.server.json" :
+                configType.isTest() ? "tsconfig.test.json" : undefined
     );
 
     plugins.push(new ForkTsCheckerWebpackPlugin({
@@ -31,6 +31,11 @@ module.exports = (configType) => {
 
     (configType.isDev() || configType.isProd) && plugins.push(configType.isDev() ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
 
+    configType.isDev() && plugins.push(new webpack.SourceMapDevToolPlugin({
+        test: /((chunk)|(((main\.)|(vendor\.))entry))\.js$/,
+        moduleFilenameTemplate: "/[resource-path]"
+    }));
+
     configType.isDev() && plugins.push(new webpack.HotModuleReplacementPlugin());
 
     configType.isProd() && plugins.push(new UglifyJsPlugin({
@@ -42,7 +47,7 @@ module.exports = (configType) => {
     configType.isClient() && plugins.push(new webpack.optimize.CommonsChunkPlugin({
         names: "vendor",
         minChunks: function(module) {
-            return module.context && module.context.indexOf('node_modules') !== -1;
+            return module.context && module.context.indexOf("node_modules") !== -1;
         }
     }));
 

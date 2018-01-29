@@ -46,7 +46,7 @@ server.use((req: express.Request, res: express.Response, next: express.NextFunct
         <Loadable.Capture report={moduleName => modules.push(moduleName)}>
             <Provider store={reduxStore}>
                 <Router history={history}>
-                    <App/>
+                    <App />
                 </Router>
             </Provider>
         </Loadable.Capture>

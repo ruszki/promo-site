@@ -9,9 +9,9 @@ import * as Loadable from "react-loadable";
 import {hydrate} from "emotion";
 import {AppContainer} from "react-hot-loader";
 import RootReducer from "@app/reducers";
-import App from "../app/index";
+import App from "@app";
 
-window.addEventListener("load", async function () {
+window.addEventListener("load", async function() {
     const sagaMiddleware: SagaMiddleware<any> = createSagaMiddleware();
 
     const history = createHistory();
@@ -25,7 +25,7 @@ window.addEventListener("load", async function () {
         hydrate(window.__PRELOADED_STYLESHEETS__);
     }
 
-    sagaMiddleware.run(function*(): SagaIterator {});
+    sagaMiddleware.run(function* (): SagaIterator {});
 
     const app: HTMLElement | null = document.getElementById("app");
 
@@ -33,7 +33,7 @@ window.addEventListener("load", async function () {
         const appReact = (AppComponent: React.ComponentType<any>) => <AppContainer>
             <Provider store={reduxStore}>
                 <Router history={history}>
-                    <AppComponent/>
+                    <AppComponent />
                 </Router>
             </Provider>
         </AppContainer>;
@@ -53,7 +53,7 @@ window.addEventListener("load", async function () {
             render(App);
 
             if (module.hot) {
-                module.hot.accept("../app/index", () => {
+                module.hot.accept("@app", () => {
                     render(App);
                 });
             }

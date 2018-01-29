@@ -5,7 +5,7 @@
     "compileOnSave": true,
     "compilerOptions": {
         "sourceMap": false,
-        "inlineSourceMap": true,
+        "inlineSourceMap": false,
         "jsx": "preserve",
         "newLine": "LF",
         "outDir": "../build/ts",
@@ -24,12 +24,24 @@
         "strict": true,
         "baseUrl": "../../",
         "paths": {
-            "@app": ["app"],
-            "@app/*": ["app/*"],
-            "@res": ["app/resources"],
-            "@res/*": ["app/resources/*"],
-            "@img": ["app/resources/img"],
-            "@img/*": ["app/resources/img/*"]
+            "@app": [
+                "app"
+            ],
+            "@app/*": [
+                "app/*"
+            ],
+            "@res": [
+                "app/resources"
+            ],
+            "@res/*": [
+                "app/resources/*"
+            ],
+            "@img": [
+                "app/resources/img"
+            ],
+            "@img/*": [
+                "app/resources/img/*"
+            ]
         }
     }
 }

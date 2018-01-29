@@ -7,13 +7,15 @@ const entry = require("./generators/entry");
 const modulePack = require("./generators/module");
 const target = require("./generators/target");
 const externals = require("./generators/externals");
+const webpack = require("webpack");
+
+webpack.ModuleFilenameHelpers.createFooter = () => "";
 
 module.exports = (configType) => {
     const config = {
         name: name(configType),
         resolve: resolve(configType),
         plugins: plugins(configType),
-        devtool: devtool(configType),
         module: modulePack(configType),
         target: target(configType),
         externals: externals(configType)

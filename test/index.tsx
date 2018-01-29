@@ -1,6 +1,6 @@
-import { expect } from "chai";
+import {expect} from "chai";
 import * as React from "react";
-import { shallow } from "./utils/enzyme";
+import {shallow} from "./utils/enzyme";
 import ComponentMock from "./mocks/ComponentMock";
 import * as AppInjector from "inject-loader!@app";
 import AppReal from "@app";

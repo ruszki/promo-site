@@ -22,16 +22,13 @@ module.exports = (configType) => {
     });
 
     use.push({
-        loader: "babel-loader",
-        options: {
-            cacheDirectory: true
-        }
+        loader: "babel-loader"
     });
 
     const configFilePath = "typescript/" + (
         configType.isClient() ? "tsconfig.client.json" :
-        configType.isServer() ? "tsconfig.server.json" :
-        configType.isTest() ? "tsconfig.test.json" : undefined
+            configType.isServer() ? "tsconfig.server.json" :
+                configType.isTest() ? "tsconfig.test.json" : undefined
     );
 
     configFilePath !== undefined && use.push({

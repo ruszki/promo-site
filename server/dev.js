@@ -1,7 +1,7 @@
-const express = require('express');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+const express = require("express");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
 const path = require("path");
 const fs = require("fs");
 const baseConfig = require("../config/webpack/webpack.base.config");
@@ -41,26 +41,26 @@ server.get("/", (req, res) => {
 
     if (assetsByChunkName.hasOwnProperty("manifest")) {
         normalizeAssets(assetsByChunkName["manifest"])
-            .filter(path => path.endsWith('.js'))
+            .filter(path => path.endsWith(".js"))
             .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     if (assetsByChunkName.hasOwnProperty("vendor")) {
         normalizeAssets(assetsByChunkName["vendor"])
-            .filter(path => path.endsWith('.js'))
+            .filter(path => path.endsWith(".js"))
             .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     if (assetsByChunkName.hasOwnProperty("main")) {
         normalizeAssets(assetsByChunkName["main"])
-            .filter(path => path.endsWith('.js'))
+            .filter(path => path.endsWith(".js"))
             .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
     }
 
     Object.keys(assetsByChunkName).forEach(key => {
         if (assetsByChunkName.hasOwnProperty(key) && key !== "manifest" && key !== "vendor" && key !== "main") {
             normalizeAssets(assetsByChunkName[key])
-                .filter(path => path.endsWith('.js'))
+                .filter(path => path.endsWith(".js"))
                 .forEach(path => scripts.push(`<script src="/assets/${assetsByChunkName[key]}" defer></script>`));
         }
     });
@@ -69,7 +69,7 @@ server.get("/", (req, res) => {
 <html>
   <head>
     <title>Dev mode</title>
-    ${scripts.join('\n')}
+    ${scripts.join("\n")}
   </head>
   <body>
     <div id="app"></div>
