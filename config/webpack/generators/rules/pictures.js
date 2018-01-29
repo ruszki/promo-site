@@ -27,8 +27,10 @@ module.exports = (configType) => {
         loader: "image-webpack-loader"
     });
 
-    return {
-        test: /\.(gif|png|jpe?g|svg)$/i,
-        use
-    };
+    return [
+        {
+            test: /\.(gif|png|jpe?g|svg)$/i,
+            use
+        }
+    ];
 };

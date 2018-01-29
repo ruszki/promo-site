@@ -22,8 +22,10 @@ module.exports = (configType) => {
         }
     });
 
-    return {
-        test: /\.(eot|woff|ttf|woff2)$/i,
-        use
-    };
+    return [
+        {
+            test: /\.(eot|woff|ttf|woff2)$/i,
+            use
+        }
+    ];
 };

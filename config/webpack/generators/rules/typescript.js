@@ -46,10 +46,30 @@ module.exports = (configType) => {
     configType.isClient() && include.push(constants.clientDir);
     configType.isTest() && include.push(constants.testDir);
 
-    return {
-        test: /\.ts(x?)$/i,
+    const test = /\.ts(x?)$/i;
+
+    const rules = [];
+
+    rules.push({
+        test,
         include,
         exclude: path.resolve(constants.rootDir, "node_modules"),
         use
-    };
+    });
+
+    configType.isCoverage() && rules.push({
+        test,
+        use: {
+            loader: "istanbul-instrumenter-loader",
+            options: {
+                esModules: true,
+                produceSourceMap: true
+            }
+        },
+        enforce: "post",
+        include: constants.appDir,
+        exclude: path.resolve(constants.rootDir, "node_modules"),
+    });
+
+    return rules;
 };

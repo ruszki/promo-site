@@ -30,10 +30,12 @@ module.exports = (configType) => {
     configType.isClient() && include.push(constants.clientDir);
     configType.isTest() && include.push(constants.testDir);
 
-    return {
-        test: /\.js$/i,
-        include,
-        exclude: path.resolve(constants.rootDir, "node_modules"),
-        use
-    };
+    return [
+        {
+            test: /\.js$/i,
+            include,
+            exclude: path.resolve(constants.rootDir, "node_modules"),
+            use
+        }
+    ];
 };

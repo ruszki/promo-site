@@ -15,8 +15,10 @@ module.exports = (configType) => {
         loader: "json-loader"
     });
 
-    return {
-        test: /\.json$/i,
-        use
-    };
+    return [
+        {
+            test: /\.json$/i,
+            use
+        }
+    ];
 };

@@ -6,10 +6,10 @@ const fonts = require("./rules/fonts");
 module.exports = (configType) => {
     const rules = [];
 
-    rules.push(typescript(configType));
-    rules.push(json(configType));
-    rules.push(pictures(configType));
-    rules.push(fonts(configType));
+    rules.splice(rules.length, 0, ...typescript(configType));
+    rules.splice(rules.length, 0, ...json(configType));
+    rules.splice(rules.length, 0, ...pictures(configType));
+    rules.splice(rules.length, 0, ...fonts(configType));
 
     return {
         rules
