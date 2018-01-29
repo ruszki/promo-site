@@ -35,33 +35,24 @@ server.get("/", (req, res) => {
         return Array.isArray(assets) ? assets : [assets]
     }
 
+    const addScripts = (assetsByChunkName, key, scripts) => {
+        if (assetsByChunkName.hasOwnProperty(key)) {
+            normalizeAssets(assetsByChunkName[key])
+                .filter(path => path.endsWith(".js"))
+                .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
+        }
+    }
+
     const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 
     const scripts = [];
-
-    if (assetsByChunkName.hasOwnProperty("manifest")) {
-        normalizeAssets(assetsByChunkName["manifest"])
-            .filter(path => path.endsWith(".js"))
-            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
-    }
-
-    if (assetsByChunkName.hasOwnProperty("vendor")) {
-        normalizeAssets(assetsByChunkName["vendor"])
-            .filter(path => path.endsWith(".js"))
-            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
-    }
-
-    if (assetsByChunkName.hasOwnProperty("main")) {
-        normalizeAssets(assetsByChunkName["main"])
-            .filter(path => path.endsWith(".js"))
-            .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
-    }
+    addScripts(assetsByChunkName, "manifest", scripts);
+    addScripts(assetsByChunkName, "vendor", scripts);
+    addScripts(assetsByChunkName, "main", scripts);
 
     Object.keys(assetsByChunkName).forEach(key => {
-        if (assetsByChunkName.hasOwnProperty(key) && key !== "manifest" && key !== "vendor" && key !== "main") {
-            normalizeAssets(assetsByChunkName[key])
-                .filter(path => path.endsWith(".js"))
-                .forEach(path => scripts.push(`<script src="/assets/${assetsByChunkName[key]}" defer></script>`));
+        if (key !== "manifest" && key !== "vendor" && key !== "main") {
+            addScripts(assetsByChunkName, key, scripts);
         }
     });
 

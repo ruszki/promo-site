@@ -4,8 +4,7 @@
     ],
     "compileOnSave": true,
     "compilerOptions": {
-        "sourceMap": false,
-        "inlineSourceMap": false,
+        "sourceMap": true,
         "jsx": "preserve",
         "newLine": "LF",
         "outDir": "../build/ts",
