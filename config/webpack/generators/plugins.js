@@ -29,7 +29,7 @@ module.exports = (configType) => {
         }
     }));
 
-    (configType.isDev() || configType.isProd) && plugins.push(configType.isDev() ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
+    (configType.isDev() || configType.isProd()) && plugins.push(configType.isDev() ? new webpack.NamedModulesPlugin() : new webpack.HashedModuleIdsPlugin());
 
     (configType.isDev() || configType.isTest()) && plugins.push(new webpack.SourceMapDevToolPlugin({
         test: /((chunk)|(((main)|(vendor)|(server))\.entry))\.js$/,
