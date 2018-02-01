@@ -1,11 +1,24 @@
-const path = require("path");
 const constants = require("./constants");
+
+const filename = (configType) => configType.isDev() || configType.isServer() || configType.isTest() ?
+    "[name].entry.js" :
+    "[name].[chunkhash].entry.js";
+
+const chunkFilename = (configType) => configType.isClient() && !configType.isDev() && !configType.isTest() ?
+    "[name].[chunkhash].chunk.js" :
+    "[name].chunk.js";
+
+const path = (configType) => configType.isTest() ?
+    constants.testBuildDir :
+    configType.isClient() ?
+        constants.clientBuildDir :
+        constants.serverBuildDir;
 
 module.exports = (configType) => {
     return {
-        filename: configType.isDev() || configType.isServer() || configType.isTest() ? "[name].entry.js" : "[name].[chunkhash].entry.js",
-        chunkFilename: configType.isDev() || configType.isTest() ? "[name].chunk.js" : configType.isClient() ? "[name].[chunkhash].chunk.js" : undefined,
-        path: configType.isTest() ? constants.testBuildDir : configType.isClient() ? constants.clientBuildDir : constants.serverBuildDir,
+        filename: filename(configType),
+        chunkFilename: chunkFilename(configType),
+        path: path(configType),
         publicPath: constants.publicPath
     };
 };

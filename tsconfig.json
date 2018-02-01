@@ -1,0 +1,13 @@
+{
+    "extends": "./config/typescript/tsconfig.base.json",
+    "include": [
+        "./app/**/*.ts",
+        "./app/**/*.tsx",
+        "./client/**/*.ts",
+        "./client/**/*.tsx",
+        "./server/**/*.ts",
+        "./server/**/*.tsx",
+        "./test/**/*.ts",
+        "./test/**/*.tsx"
+    ]
+}

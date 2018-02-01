@@ -3,10 +3,8 @@ const fs = require("fs");
 const baseConfig = require("./webpack.base.config");
 const ConfigType = require("./config-type");
 
-const buildPath = path.resolve(__dirname, "../../build");
-
-if (!fs.existsSync(buildPath)) {
-    fs.mkdirSync(buildPath);
+if (!fs.existsSync("../../build")) {
+    fs.mkdirSync("../../build");
 }
 
 const getConfigType = (client, dev) => {
