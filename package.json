@@ -1,0 +1,139 @@
+{
+    "name": "promo-site",
+    "version": "0.0.1",
+    "description": "A site to promote my works as a web developer",
+    "main": "index.js",
+    "repository": "https://github.com/ruszki/promo-site.git",
+    "author": "Gergo, Vladiszavlyev <me@ruszki.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/chai": "^4.1.1",
+        "@types/enzyme": "^3.1.8",
+        "@types/enzyme-adapter-react-16": "^1.0.1",
+        "@types/express": "^4.11.0",
+        "@types/mocha": "^2.2.46",
+        "@types/react": "^16.0.34",
+        "@types/react-dom": "^16.0.3",
+        "@types/react-hot-loader": "^3.0.5",
+        "@types/react-loadable": "^5.3.1",
+        "@types/react-redux": "^5.0.14",
+        "@types/react-router-redux": "^5.0.11",
+        "@types/redux-actions": "^2.2.3",
+        "@types/serialize-javascript": "^1.3.2",
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-plugin-emotion": "^8.0.12",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
+        "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+        "babel-plugin-transform-object-assign": "^6.22.0",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-plugin-transform-react-constant-elements": "^6.23.0",
+        "babel-plugin-transform-react-inline-elements": "^6.22.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "cache-loader": "^1.2.0",
+        "chai": "^4.1.2",
+        "cross-env": "^5.1.3",
+        "emotion": "^8.0.12",
+        "emotion-server": "^8.0.12",
+        "enzyme": "^3.3.0",
+        "enzyme-adapter-react-16": "^1.1.1",
+        "express": "^4.16.2",
+        "favicons-webpack-plugin": "^0.0.7",
+        "file-loader": "^1.1.6",
+        "fork-ts-checker-webpack-plugin": "^0.3.0",
+        "html-webpack-plugin": "^2.30.1",
+        "image-webpack-loader": "^3.4.2",
+        "inject-loader": "^3.0.1",
+        "inline-chunk-manifest-html-webpack-plugin": "^2.0.0",
+        "inversify": "^4.9.0",
+        "isomorphic-fetch": "^2.2.1",
+        "isomorphic-style-loader": "^4.0.0",
+        "istanbul-instrumenter-loader": "^3.0.0",
+        "karma": "^2.0.0",
+        "karma-chai": "^0.1.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-coverage-istanbul-reporter": "^1.4.1",
+        "karma-mocha": "^1.3.0",
+        "karma-sourcemap-loader": "^0.3.7",
+        "karma-webpack": "^2.0.9",
+        "mocha": "^5.0.0",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "react-emotion": "^8.0.12",
+        "react-hot-loader": "^3.1.3",
+        "react-loadable": "^5.3.1",
+        "react-redux": "^5.0.6",
+        "react-router-dom": "^4.2.2",
+        "react-router-redux": "^5.0.0-alpha.9",
+        "redux": "^3.7.2",
+        "redux-actions": "^2.2.1",
+        "redux-saga": "^0.16.0",
+        "reflect-metadata": "^0.1.12",
+        "reselect": "^3.0.1",
+        "serialize-javascript": "^1.4.0",
+        "thread-loader": "^1.1.2",
+        "ts-loader": "^3.2.0",
+        "tslint": "^5.9.1",
+        "typescript": "^2.6.2",
+        "uglifyjs-webpack-plugin": "^1.1.6",
+        "url-loader": "^0.6.2",
+        "webpack": "^3.10.0",
+        "webpack-dev-middleware": "^2.0.4",
+        "webpack-hot-middleware": "^2.21.0"
+    },
+    "babel": {
+        "presets": [
+            "react",
+            [
+                "env",
+                {
+                    "modules": false
+                }
+            ]
+        ],
+        "plugins": [
+            "emotion",
+            "syntax-dynamic-import",
+            "transform-es2015-destructuring",
+            "transform-object-rest-spread",
+            "transform-object-assign",
+            "react-loadable/babel",
+            "transform-react-constant-elements",
+            "transform-react-inline-elements"
+        ],
+        "env": {
+            "production": {
+                "plugins": [
+                    [
+                        "emotion",
+                        {
+                            "hoist": true
+                        }
+                    ]
+                ]
+            },
+            "development": {
+                "plugins": [
+                    [
+                        "emotion",
+                        {
+                            "sourceMap": false,
+                            "autoLabel": true
+                        }
+                    ],
+                    "react-hot-loader/babel"
+                ]
+            }
+        }
+    },
+    "scripts": {
+        "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --colors --config config/webpack/webpack.config.js --env.prod --progress",
+        "start": "cross-env NODE_ENV=development node --max_old_space_size=4096 --inspect server/dev.js",
+        "runServer": "cross-env NODE_ENV=production node build/server/server.entry.js",
+        "test": "karma start config/karma/karma.conf.js --single-run",
+        "test:watch": "karma start config/karma/karma.conf.js",
+        "test:coverage": "karma start config/karma/karma.coverage.conf.js --single-run"
+    }
+}
