@@ -7,6 +7,8 @@ const fs = require("fs");
 const baseConfig = require("../config/webpack/webpack.base.config");
 const ConfigType = require("../config/webpack/config-type");
 
+const manifestChunkName = "main-runtime";
+
 const dev = !process.env.NODE_ENV || process.env.NODE_ENV != "production";
 
 const config = baseConfig(dev ? ConfigType.ClientDev : ConfigType.ClientProd);
@@ -46,12 +48,10 @@ server.get("/", (req, res) => {
     const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 
     const scripts = [];
-    addScripts(assetsByChunkName, "manifest", scripts);
-    addScripts(assetsByChunkName, "vendor", scripts);
-    addScripts(assetsByChunkName, "main", scripts);
+    addScripts(assetsByChunkName, manifestChunkName, scripts);
 
     Object.keys(assetsByChunkName).forEach(key => {
-        if (key !== "manifest" && key !== "vendor" && key !== "main") {
+        if (key !== manifestChunkName) {
             addScripts(assetsByChunkName, key, scripts);
         }
     });

@@ -16,11 +16,6 @@ module.exports = (configType) => {
         }
     });
 
-    !configType.isTest() && use.push({
-        loader: "thread-loader",
-        options: workerPoolTs,
-    });
-
     use.push({
         loader: "babel-loader"
     });
@@ -34,7 +29,6 @@ module.exports = (configType) => {
     configFilePath !== undefined && use.push({
         loader: "ts-loader",
         options: {
-            happyPackMode: !configType.isTest(),
             configFile: path.resolve(constants.configDir, configFilePath)
         }
     });
