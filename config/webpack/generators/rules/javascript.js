@@ -1,39 +1,22 @@
 const path = require("path");
 const constants = require("../constants");
+const scriptInclude = require("./script-include");
+const scriptUse = require("./script-use");
+
+const workerPoolJs = {
+    workers: Math.max(Math.floor(require("os").cpus().length / 2), 1),
+    name: "js"
+};
 
 module.exports = (configType) => {
     const use = [];
 
-    configType.isDev() && use.push({
-        loader: "cache-loader",
-        options: {
-            cacheDirectory: path.resolve(constants.cacheDir, "webpack")
-        }
-    });
-
-    !configType.isTest() && use.push({
-        loader: "thread-loader",
-        options: workerPoolTs,
-    });
-
-    use.push({
-        loader: "babel-loader",
-        options: {
-            cacheDirectory: true
-        }
-    });
-
-    const include = [];
-
-    include.push(constants.appDir);
-    configType.isServer() && include.push(constants.serverDir);
-    configType.isClient() && include.push(constants.clientDir);
-    configType.isTest() && include.push(constants.testDir);
+    scriptUse(configType, use, workerPoolJs);
 
     return [
         {
             test: /\.js$/i,
-            include,
+            include: scriptInclude(configType),
             exclude: path.resolve(constants.rootDir, "node_modules"),
             use
         }

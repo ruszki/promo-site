@@ -7,7 +7,7 @@ const fs = require("fs");
 const baseConfig = require("../config/webpack/webpack.base.config");
 const ConfigType = require("../config/webpack/config-type");
 
-const dev = !process.env.NODE_ENV || process.env.NODE_ENV != "production";
+const dev = !process.env.NODE_ENV || process.env.NODE_ENV !== "production";
 
 const config = baseConfig(dev ? ConfigType.ClientDev : ConfigType.ClientProd);
 
@@ -22,7 +22,6 @@ server.use(webpackDevMiddleware(compiler, {
 }));
 
 server.use(webpackHotMiddleware(compiler, {
-    log: console.log,
     path: "/__webpack_hmr"
 }));
 
@@ -31,28 +30,24 @@ server.use(express.json({
 }));
 
 server.get("/", (req, res) => {
-    const normalizeAssets = (assets) => {
-        return Array.isArray(assets) ? assets : [assets]
-    }
+    const normalizeAssets = (assets) => Array.isArray(assets) ? assets : [assets];
 
-    const addScripts = (assetsByChunkName, key, scripts) => {
-        if (assetsByChunkName.hasOwnProperty(key)) {
-            normalizeAssets(assetsByChunkName[key])
-                .filter(path => path.endsWith(".js"))
-                .forEach(path => scripts.push(`<script src="/assets/${path}" defer></script>`));
-        }
-    }
+    const addScripts = (assets, scripts) => {
+        normalizeAssets(assets)
+            .filter((path) => path.endsWith(".js"))
+            .forEach((path) => scripts.push(`<script src="/assets/${path}" defer></script>`));
+    };
 
     const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 
     const scripts = [];
-    addScripts(assetsByChunkName, "manifest", scripts);
-    addScripts(assetsByChunkName, "vendor", scripts);
-    addScripts(assetsByChunkName, "main", scripts);
+    addScripts(assetsByChunkName["manifest"], scripts);
+    addScripts(assetsByChunkName["vendor"], scripts);
+    addScripts(assetsByChunkName["main"], scripts);
 
-    Object.keys(assetsByChunkName).forEach(key => {
+    Object.entries(assetsByChunkName).forEach(([key, value]) => {
         if (key !== "manifest" && key !== "vendor" && key !== "main") {
-            addScripts(assetsByChunkName, key, scripts);
+            addScripts(value, scripts);
         }
     });
 
@@ -66,7 +61,7 @@ server.get("/", (req, res) => {
     <div id="app"></div>
   </body>
 </html>
-  `)
+  `);
 });
 
-server.listen(8080, () => console.log("Server started on port 8080"));
+server.listen(8080);

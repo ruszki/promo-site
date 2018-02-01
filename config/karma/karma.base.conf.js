@@ -27,13 +27,14 @@ module.exports = (coverage) => {
     });
 
     const preprocessorList = ["webpack", "sourcemap"];
-    const preprocessors = {};
-
-    !coverage && (preprocessors[tsPattern] = preprocessorList);
-
-    !coverage && (preprocessors[tsxPattern] = preprocessorList);
-
-    coverage && (preprocessors[testIndexPattern] = preprocessorList);
+    const preprocessors = !coverage ?
+        {
+            [tsPattern]: preprocessorList,
+            [tsxPattern]: preprocessorList
+        } :
+        {
+            [testIndexPattern]: preprocessorList
+        };
 
     const plugins = [
         "karma-webpack",
@@ -66,4 +67,4 @@ module.exports = (coverage) => {
             "application / javascript": ["ts", "tsx", "js", "jsx"]
         }
     };
-}
+};

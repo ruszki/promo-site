@@ -15,10 +15,10 @@ module.exports = {
     clientDir: path.resolve(rootDir, "client/"),
     serverDir: path.resolve(rootDir, "server/"),
     testDir: path.resolve(rootDir, "test/"),
-    buildDir: buildDir,
+    buildDir,
     clientBuildDir: path.resolve(buildDir, "client/"),
     serverBuildDir: path.resolve(buildDir, "server/"),
     testBuildDir: path.resolve(buildDir, "test/"),
     cacheDir: path.resolve(rootDir, ".cache/"),
     publicPath: "/assets/"
-}
+};

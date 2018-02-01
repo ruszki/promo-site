@@ -3,6 +3,4 @@
 /build/
 /.tsconfig.json
 /.vscode/
-/tsconfig.json
-/tslint.json
 /coverage/

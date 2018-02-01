@@ -131,7 +131,7 @@
     "scripts": {
         "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --colors --config config/webpack/webpack.config.js --env.prod --progress",
         "start": "cross-env NODE_ENV=development node --max_old_space_size=4096 --inspect server/dev.js",
-        "runServer": "cross-env NODE_ENV=production node build/server/server.entry.js",
+        "start:prod": "cross-env NODE_ENV=production node build/server/server.entry.js",
         "test": "karma start config/karma/karma.conf.js --single-run",
         "test:watch": "karma start config/karma/karma.conf.js",
         "test:coverage": "karma start config/karma/karma.coverage.conf.js --single-run"

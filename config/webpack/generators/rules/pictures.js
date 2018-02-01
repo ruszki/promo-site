@@ -1,31 +1,51 @@
 const path = require("path");
 const constants = require("../constants");
+const cacheLoader = require("./cache-loader");
+
+const fileUrlLoader = (configType, use) => {
+    const fileLoader = configType.isDev() || configType.isTest();
+
+    let loader = "file-loader";
+    let options = {
+        hash: "sha512",
+        digest: "hex",
+        publicPath: constants.publicPath,
+        outputPath: "img/"
+    };
+
+    if (fileLoader) {
+        options = {
+            ...options,
+            name: "[name].[ext]"
+        };
+    } else {
+        options = {
+            ...options,
+            limit: 8192,
+            name: "[name].[hash].[ext]"
+        };
+
+        loader = "url-loader";
+    }
+
+    use.push({
+        loader,
+        options
+    });
+};
+
+const imageWebpackLoader = (configType, use) => {
+    use.push({
+        loader: "image-webpack-loader"
+    });
+};
 
 module.exports = (configType) => {
     const use = [];
 
-    configType.isDev() && use.push({
-        loader: "cache-loader",
-        options: {
-            cacheDirectory: path.resolve(constants.cacheDir, "webpack")
-        }
-    });
-
-    use.push({
-        loader: configType.isDev() || configType.isTest() ? "file-loader" : "url-loader",
-        options: {
-            limit: configType.isDev() || configType.isTest() ? undefined : 8192,
-            hash: "sha512",
-            digest: "hex",
-            name: configType.isDev() || configType.isTest() ? "[name].[ext]" : "[name].[hash].[ext]",
-            publicPath: constants.publicPath,
-            outputPath: "img/"
-        }
-    });
-
-    use.push({
-        loader: "image-webpack-loader"
-    });
+    cacheLoader(configType, use);
+    fileUrlLoader(configType, use);
+    imageWebpackLoader(configType, use);
 
     return [
         {

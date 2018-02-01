@@ -13,5 +13,5 @@ module.exports = (configType) => {
 
     return {
         rules
-    }
+    };
 };

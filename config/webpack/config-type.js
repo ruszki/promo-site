@@ -79,4 +79,4 @@ module.exports = {
     ServerProd: new ConfigType(InternalConfigType.ServerProd),
     Test: new ConfigType(InternalConfigType.Test),
     Coverage: new ConfigType(InternalConfigType.Coverage)
-}
+};

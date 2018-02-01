@@ -7,7 +7,7 @@
         "sourceMap": true,
         "jsx": "preserve",
         "newLine": "LF",
-        "outDir": "../build/ts",
+        "outDir": "../../build/ts",
         "module": "esnext",
         "target": "es2017",
         "lib": [
