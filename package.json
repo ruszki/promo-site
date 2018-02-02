@@ -2,7 +2,6 @@
     "name": "promo-site",
     "version": "0.0.1",
     "description": "A site to promote my works as a web developer",
-    "main": "index.js",
     "repository": "https://github.com/ruszki/promo-site.git",
     "author": "Gergo, Vladiszavlyev <me@ruszki.com>",
     "license": "MIT",
